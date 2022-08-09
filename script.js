@@ -1,12 +1,13 @@
 const adviceText = document.querySelector(".quote")
-const  AdviceId = document.querySelector("#id")
+const  AdviceId = document.querySelector(".id")
 const  quoteBtn = document.querySelector("button")
 const voiceBtn= document.getElementById("voice");
+const  copyBtn = document.querySelector("#copy")
+const  twitterBtn = document.querySelector("#twitter")
+
 
 var speech = new SpeechSynthesisUtterance();
 console.log(speech);
-
-
 
 const randomAdvice = async () => {
   const res = await fetch("https://api.adviceslip.com/advice")
@@ -15,7 +16,7 @@ const randomAdvice = async () => {
   adviceText.innerText = result.slip.advice
   AdviceId.innerText = "Advice #" + `${result.slip.id}`
   const text = result.slip.advice;
-
+  
   if (text.trim() != "") {
     speech.text = text;
     speech.rate = 0.9;
@@ -56,6 +57,16 @@ function TexttoSpeech() {
 voiceBtn.addEventListener("click", () => {
   TexttoSpeech();
 });
+
+copyBtn.addEventListener("click", () => {
+  navigator.clipboard.writeText(adviceText.innerText);
+});
+twitterBtn.addEventListener("click", () => {
+ let tweetUrl = 'https://twitter.com/intent/tweet?url= $(adviceText.innerText)';
+ window.open(tweetUrl,"_blank");
+});
+
+
 
 quoteBtn.addEventListener("click", randomAdvice)
 
